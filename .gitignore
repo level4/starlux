@@ -25,7 +25,9 @@ starlux-*.tar
 # Temporary files, for example, from tests.
 /tmp/
 
+# OSX junk
 .DS_Store
 
 # rust builds
 target/
+priv/native/

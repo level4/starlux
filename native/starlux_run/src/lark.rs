@@ -26,11 +26,15 @@ use std::path::Path;
 // Define a store in which to accumulate JSON strings
 #[derive(Debug, ProvidesStaticType, Default)]
 struct Store(RefCell<Vec<String>>);
+// struct Store(RefCell<Vec<serde_json::Value>>);
 
 impl Store {
     fn add(&self, x: String) {
         self.0.borrow_mut().push(x)
     }
+    // fn add(&self, x: serde_json::Value) {
+    //     self.0.borrow_mut().push(x);
+    // }
 }
 #[starlark_module]
 pub fn starlark_emit(builder: &mut GlobalsBuilder) {

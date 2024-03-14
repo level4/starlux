@@ -727,6 +727,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "quick-error"
+version = "1.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a1d01941d82fa2ab50be1e79e6714289dd7cde78eba4c074bc5a4374f650dfe0"
+
+[[package]]
 name = "quote"
 version = "1.0.35"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -954,6 +960,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "serde-transcode"
+version = "1.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "590c0e25c2a5bb6e85bf5c1bce768ceb86b316e7a01bdf07d2cb4ec2271990e2"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "serde_derive"
 version = "1.0.197"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -984,6 +999,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.52",
+]
+
+[[package]]
+name = "serde_rustler"
+version = "0.1.0"
+source = "git+https://github.com/stevensonmt/serde_rustler/#f8fff4c2d88fdfa4106d4d9bb43c744316b412e7"
+dependencies = [
+ "lazy_static",
+ "quick-error",
+ "rustler",
+ "rustler_codegen",
+ "serde",
 ]
 
 [[package]]
@@ -1093,7 +1120,9 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "rustler",
+ "serde-transcode",
  "serde_json",
+ "serde_rustler",
  "starlark",
 ]
 

@@ -12,5 +12,7 @@ crate-type = ["cdylib"]
 [dependencies]
 anyhow = "1.0.81"
 rustler = "0.31.0"
+serde-transcode = "1.1.1"
 serde_json = "1.0.114"
+serde_rustler = { git = "https://github.com/stevensonmt/serde_rustler/" }
 starlark = "0.12.0"
