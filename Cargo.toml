@@ -1,0 +1,2 @@
+[workspace]
+members = ["native/starlux_run"]

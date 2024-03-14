@@ -26,3 +26,6 @@ starlux-*.tar
 /tmp/
 
 .DS_Store
+
+# rust builds
+target/

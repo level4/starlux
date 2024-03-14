@@ -10,5 +10,7 @@ path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
+anyhow = "1.0.81"
 rustler = "0.31.0"
+serde_json = "1.0.114"
 starlark = "0.12.0"
