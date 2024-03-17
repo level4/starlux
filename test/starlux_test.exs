@@ -8,17 +8,19 @@ defmodule StarluxTest do
 
   test "evaluates and returns json" do
     code = "emit(1 + 1)"
-    assert Starlux.Run.evaluate_and_return_json(code) == {:ok, ["2"]}
+    assert Starlux.Run.evaluate(code) == {:ok, {"None", ["2"]}}
   end
 
   test "evaluates more complex code" do
     code = """
     def add(x, y):
       return x + y
-    emit(add(1, 2))
+    res = add(1, 2)
+    emit(res)
+    res
     """
 
-    assert Starlux.Run.evaluate_and_return_json(code) == {:ok, ["3"]}
+    assert Starlux.Run.evaluate(code) == {:ok, {"3", ["3"]}}
   end
 
   test "evaluates emit of a map" do
@@ -26,6 +28,6 @@ defmodule StarluxTest do
     emit({"a": 1, "b": 2})
     """
 
-    assert Starlux.Run.evaluate_and_return_json(code) == {:ok, ["{\"a\":1,\"b\":2}"]}
+    assert Starlux.Run.evaluate(code) == {:ok, {"None", ["{\"a\":1,\"b\":2}"]}}
   end
 end

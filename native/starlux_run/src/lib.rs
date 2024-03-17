@@ -14,24 +14,24 @@ mod atoms {
         nil
     }
 }
-
 #[rustler::nif(schedule = "DirtyCpu")]
-fn evaluate_and_return_json<'a>(env: Env<'a>, code: String) -> NifResult<Term<'a>> {
+fn evaluate<'a>(env: Env<'a>, code: String) -> NifResult<Term<'a>> {
     match evaluate_starlark_code(&code) {
-        Ok(json_output) => {
-            // Deserialize the JSON output to a serde_json::Value
-            let json: JsonValue = serde_json::from_str(&json_output)
+        Ok((eval_str, store_json)) => {
+            // Convert the direct evaluation result to an Elixir term
+            let eval_term = eval_str.encode(env);
+
+            // Deserialize the store's JSON output to a serde_json::Value
+            let store_json_value: JsonValue = serde_json::from_str(&store_json)
                 .map_err(|e| Error::RaiseTerm(Box::new(e.to_string())))?;
 
-            // Convert the serde_json::Value into an Elixir term
-            let term_result = serde_transcode::transcode(
-                &mut serde_json::Deserializer::from_slice(json_output.as_bytes()),
-                serde_rustler::Serializer::from(env)
-            ).map_err(|e| Error::RaiseTerm(Box::new(format!("{}", e))))?;
+            // Convert the serde_json::Value of the store into an Elixir term
+            let store_term = serde_rustler::to_term(env, &store_json_value)
+                .map_err(|e| Error::RaiseTerm(Box::new(format!("{}", e))))?;
 
-            // Wrap the result in an :ok tuple
+            // Wrap the results in an :ok tuple along with both terms
             let ok_atom = atoms::ok(); // Ensure you have defined this atom
-            Ok((ok_atom, term_result).encode(env))
+            Ok((ok_atom, (eval_term, store_term)).encode(env))
         },
         Err(e) => {
             // Wrap the error in an :error tuple
@@ -42,4 +42,4 @@ fn evaluate_and_return_json<'a>(env: Env<'a>, code: String) -> NifResult<Term<'a
 }
 
 
-rustler::init!("Elixir.Starlux.Run", [evaluate_and_return_json]);
+rustler::init!("Elixir.Starlux.Run", [evaluate]);

@@ -118,19 +118,25 @@ fn print_args() {
 
 
 
-pub fn evaluate_starlark_code(code: &str) -> Result<String, Box<dyn std::error::Error>> {
-    let ast = AstModule::parse("input.star", code.to_owned(), &Dialect::Extended);
+pub fn evaluate_starlark_code(code: &str) -> Result<(String, String), starlark::Error> {
+        let ast = AstModule::parse("input.star", code.to_owned(), &Dialect::Extended)?;
     let globals = GlobalsBuilder::new().with(starlark_emit).build();
     let module = Module::new();
     let store = Store::default();
 
+    // Evaluate the Starlark code and capture the result
+    let eval_result: Value;
     {
         let mut eval = Evaluator::new(&module);
         eval.extra = Some(&store);
-        eval.eval_module(ast.unwrap(), &globals);
+        eval_result = eval.eval_module(ast, &globals)?;
     }
 
+    // Serialize the eval_result to a string, if needed
+    let eval_str = eval_result.to_str();
+
     // Serialize the store's contents to JSON
-    let json = serde_json::to_string(&*store.0.borrow())?;
-    Ok(json)
+    let store_json = serde_json::to_string(&*store.0.borrow()).unwrap();
+    
+    Ok((eval_str, store_json))
 }
