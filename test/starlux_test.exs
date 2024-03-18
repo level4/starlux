@@ -16,11 +16,13 @@ defmodule StarluxTest do
     def add(x, y):
       return x + y
     res = add(1, 2)
+    length = len(str(res))
     emit(res)
+    emit(length)
     res
     """
 
-    assert Starlux.Run.evaluate(code) == {:ok, {"3", ["3"]}}
+    assert Starlux.Run.evaluate(code) == {:ok, {"3", ["3", "1"]}}
   end
 
   test "evaluates emit of a map" do

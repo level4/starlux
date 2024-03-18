@@ -3,7 +3,7 @@ use starlark::starlark_module;
 use anyhow::Result;
 use starlark::any::ProvidesStaticType;
 use starlark::environment::FrozenModule;
-// use starlark::environment::Globals;
+use starlark::environment::Globals;
 use starlark::environment::GlobalsBuilder;
 use starlark::environment::Module;
 use starlark::eval::Evaluator;
@@ -77,7 +77,7 @@ pub fn get_module(file: &str) -> starlark::Result<FrozenModule> {
     let modules = loads.iter().map(|(a, b)| (a.as_str(), b)).collect();
     let mut loader = ReturnFileLoader { modules: &modules };
 
-    let globals = GlobalsBuilder::new().with(starlark_emit).build();
+    let globals = GlobalsBuilder::standard().with(starlark_emit).build();
     let module = Module::new();
     let store = Store::default();
     {
@@ -120,7 +120,7 @@ fn print_args() {
 
 pub fn evaluate_starlark_code(code: &str) -> Result<(String, String), starlark::Error> {
         let ast = AstModule::parse("input.star", code.to_owned(), &Dialect::Extended)?;
-    let globals = GlobalsBuilder::new().with(starlark_emit).build();
+    let globals = GlobalsBuilder::standard().with(starlark_emit).build();
     let module = Module::new();
     let store = Store::default();
 
