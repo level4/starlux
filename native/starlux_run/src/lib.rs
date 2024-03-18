@@ -2,10 +2,10 @@ extern crate starlark;
 
 mod lark;
 use lark::evaluate_starlark_code;
-use std::env;
-use anyhow::Result;
+// use std::env;
+// use anyhow::Result;
 use rustler::{Encoder, Error, Env, NifResult, Term};
-use serde_json::json;
+// use serde_json::json;
 use serde_json::Value as JsonValue;
 mod atoms {
     rustler::atoms! {

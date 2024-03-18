@@ -19,11 +19,13 @@ defmodule StarluxTest do
     length = len(str(res))
     emit(res)
     emit(length)
+    j = json.decode('{"a": 1, "b": 2}')
+    emit(j)
     emit(True)
     res
     """
 
-    assert Starlux.Run.evaluate(code) == {:ok, {"3", ["3", "1", "true"]}}
+    assert Starlux.Run.evaluate(code) == {:ok, {"3", ["3", "1", "{\"a\":1,\"b\":2}", "true"]}}
   end
 
   test "evaluates emit of a map" do
