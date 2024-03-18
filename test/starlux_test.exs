@@ -19,10 +19,11 @@ defmodule StarluxTest do
     length = len(str(res))
     emit(res)
     emit(length)
+    emit(True)
     res
     """
 
-    assert Starlux.Run.evaluate(code) == {:ok, {"3", ["3", "1"]}}
+    assert Starlux.Run.evaluate(code) == {:ok, {"3", ["3", "1", "true"]}}
   end
 
   test "evaluates emit of a map" do
